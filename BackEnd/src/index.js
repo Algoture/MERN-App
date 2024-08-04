@@ -1,14 +1,14 @@
 import { config as configDotenv } from "dotenv";
-import express from "express";
-import cors from "cors";
 import connectDB from "./db/db.js";
-
+import express from "express";
 const app = express();
-
-app.use(cors());
 configDotenv();
 
-connectDB();
-
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
+connectDB()
+  .then(() => {
+    app.listen(process.env.PORT || 8000, () =>
+      console.log(`Server at http://localhost:${process.env.PORT}`)
+    );
+    console.log("DB Connected");
+  })
+  .catch(() => console.log("Something Went Wrong in DB connection"));
